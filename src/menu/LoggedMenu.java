@@ -1,43 +1,38 @@
 package menu;
 
-import app.Main;
-import classes.admin.Admin;
-import classes.admin.AdminManager;
-import classes.customer.CustomerManager;
-import classes.order.OrderManager;
-import classes.supermarket.SupermarketManager;
+import classes.User;
+import data.input_output.Output;
+import main.Main;
+
+import java.io.IOException;
 
 public class LoggedMenu {
-    public static void displayMenu() {
-        System.out.println(Main.admin.getName());
+    public static void ui() {
+        System.out.println(Main.masterUser.getUsername());
         System.out.println("""
                 ====== BENVINGUT A L'ENTORN D'USUARI ======
                 ___________________________________________
-                | * 1. GESTIÓ DE CLIENTS                  |
-                | * 2. GESTIÓ DE COMPRES                  |
-                | * 3. GESTIÓ DE SUPERMERCATS             |
-                | * 4. OPCIONS D'ADMINISTRADOR            |
+                | * 1. INICIAR SESSIÓ                     |
+                | * 2. AFEGIR NOVA COMPRA                 |
+                | * 3. FILTRAR COMPRES                    |
+                | * 4. AFEGIR NOU USUARI MÀSTER           |
                 | * 5. TANCAR SESSIÓ                      |
                 | * 0. SORTIR                             |
                 |_________________________________________|""");
     }
-
-    public static void handleOption(int option) {
+    public static void chooseOption(int option) {
         switch (option) {
             case 1:
-                CustomerManager.run();
                 break;
             case 2:
-                OrderManager.run();
                 break;
             case 3:
-                SupermarketManager.run();
                 break;
             case 4:
-                AdminManager.run();
+                logout();
                 break;
             case 5:
-                Admin.logout();
+                createNewMasterUser();
                 break;
             case 0:
                 System.out.println("El programa es tanca...");
@@ -46,6 +41,19 @@ public class LoggedMenu {
             default:
                 System.out.println("Error: No és una opció vàlida.");
                 break;
+        }
+    }
+    static void logout() {
+        Main.masterUser = null;
+        Main.run();
+    }
+    static void createNewMasterUser() {
+        User newMasterUser = User.createNewUser();
+        try {
+            Output.writeUsersFile(newMasterUser);
+        } catch (IOException e) {
+            System.out.println(e + "Error: No s'ha trobat l'arxiu d'usuaris");
+            Main.run();
         }
     }
 }

@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/M3-SCRUM-FINAL.iml" filepath="$PROJECT_DIR$/.idea/M3-SCRUM-FINAL.iml" />
+      <module fileurl="file://$PROJECT_DIR$/M03-scrum.iml" filepath="$PROJECT_DIR$/M03-scrum.iml" />
     </modules>
   </component>
 </project>
