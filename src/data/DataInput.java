@@ -1,6 +1,6 @@
 package data;
 
-import classes.admin.Admin;
+import classes.User;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -9,7 +9,7 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import app.Main;
+import main.Main;
 
 public interface DataInput {
     static String getValidString(String message) {
@@ -24,7 +24,6 @@ public interface DataInput {
             } else return str;
         } while (true);
     }
-
     static int getValidInteger(String message) {
         Scanner sc = new Scanner(System.in);
         do {
@@ -40,21 +39,6 @@ public interface DataInput {
         } while (true);
     }
 
-    static double getValidDouble(String message) {
-        Scanner sc = new Scanner(System.in);
-        do {
-            if (!message.isBlank()) {
-                System.out.println(message);
-            }
-            try {
-                return sc.nextDouble();
-            } catch (InputMismatchException e) {
-                System.out.println("Error: No es tracta d'un caràcter vàlid");
-                sc.next();
-            }
-        } while (true);
-    }
-
     static String getValidDni() {
         Scanner sc = new Scanner(System.in);
         String dni;
@@ -63,10 +47,10 @@ public interface DataInput {
             System.out.println("Introdueix eL DNI");
             dni = sc.nextLine();
             handleExit(dni);
-            if (!validateDni(dni)) {
+            if (validateDni(dni)) {
                 System.out.println("Error: No és un format correcte de DNI. Exemple '12345678A'");
             }
-        } while (!validateDni(dni));
+        } while (validateDni(dni));
         return dni;
     }
 
@@ -90,13 +74,13 @@ public interface DataInput {
         return age;
     }
 
-    static Admin introduceUsernameForLogin(ArrayList<Admin> users) {
+    static User introduceUsernameForLogin(ArrayList<User> users) {
         Scanner sc = new Scanner(System.in);
         System.out.println("0 => Sortir");
         System.out.println("Introdueix el nom d'usuari");
         String username = sc.nextLine();
         handleExit(username);
-        Admin user = validateUsername(users, username);
+        User user = validateUsername(users, username);
         if (user == null) {
             System.out.println("Error: No és un usuari correcte");
             Main.run();
@@ -104,16 +88,16 @@ public interface DataInput {
         return user;
     }
 
-    static Admin validateUsername(ArrayList<Admin> users, String username) {
-        for (Admin u : users) {
-            if (username.equals(u.getName())) {
+    static User validateUsername(ArrayList<User> users, String username) {
+        for (User u : users) {
+            if (username.equals(u.getUsername())) {
                 return u;
             }
         }
         return null;
     }
 
-    static void introducePasswordForLogin(Admin user) {
+    static void introducePasswordForLogin(User user) {
         Scanner sc = new Scanner(System.in);
         System.out.println("0 => Sortir");
         System.out.println("Introdueix la contrasenya");
@@ -124,7 +108,6 @@ public interface DataInput {
             Main.run();
         }
     }
-
     static boolean confirmAction() {
         Random random = new Random();
         int randomInt = 1000 + random.nextInt(9000);
@@ -133,7 +116,6 @@ public interface DataInput {
         int entry = getValidInteger("");
         return entry == randomInt;
     }
-
     static String getValidDate() {
         Scanner sc = new Scanner(System.in);
         do {
@@ -146,14 +128,12 @@ public interface DataInput {
             }
         } while (true);
     }
-
     static boolean validateDate(String date) {
         String regex = "^(0?[1-9]|[12][0-9]|3[01])/(0?[1-9]|1[0-2])/\\d{4}$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(date);
         return matcher.matches();
     }
-
     static void handleExit(String val) {
         if (val.equals("0")) {
             System.out.println("Tornant al menú...");
