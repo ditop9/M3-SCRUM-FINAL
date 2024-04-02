@@ -1,12 +1,13 @@
 package app;
 
-import classes.admin.Admin;
+import classes.*;
 import data.DataInput;
+import data.input_output.Input;
 import menu.*;
 
 public class Main {
-    // Usuari classes.admin comença null al principi per tal que no tingui permisos d'administrador
-    public static Admin admin = new Admin();
+    // Usuari admin comença null al principi per tal que no tingui permisos d'administrador
+    public static User admin = null;
 
     public static void main(String[] args) {
         run();
@@ -16,8 +17,9 @@ public class Main {
     // Els usuaris administradors es troben al document UsersData.
     public static void run() {
         int option;
+        System.out.println(Input.readOrdersFile());
         do {
-            if (admin.getId() != -1) {
+            if (admin != null) {
                 LoggedMenu.displayMenu();
                 option = DataInput.getValidInteger("Escull una opció");
                 LoggedMenu.handleOption(option);
