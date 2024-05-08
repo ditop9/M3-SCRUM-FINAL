@@ -3,28 +3,27 @@ package classes;
 import data.input_output.Input;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Classe que representa un producte en el sistema.
  */
 public class Product {
-    private final int identifier;
+    private final int id;
     private final String name;
     private final double price;
     private final boolean weight; // Indica si el producte es ven per pes o per unitat
 
     // Constructor
     public Product(int identifier, String name, double price, boolean weight) {
-        this.identifier = identifier;
+        this.id = identifier;
         this.name = name;
         this.price = price;
         this.weight = weight;
     }
 
     // Getters
-    public int getIdentifier() {
-        return identifier;
+    public int getId() {
+        return id;
     }
 
     public String getName() {
@@ -41,7 +40,7 @@ public class Product {
      * @param productsIdLine La línia de productes en format "id:quantitat'id:quantitat'..."
      * @return Una llista de productes de la compra amb les seves quantitats corresponents.
      */
-    public static HashMap<Product, Double> refactorProductIdInProducts(String productsIdLine) {
+    public static ArrayList<OrderProduct> refactorProductIdInProducts(String productsIdLine) {
         String[] productsIdAndQuantity = productsIdLine.split("'");
         return refactorOrderProducts(productsIdAndQuantity);
     }
@@ -55,7 +54,7 @@ public class Product {
     public static Product selectProductById(int id) {
         ArrayList<Product> products = Input.readProductsFile();
         for (Product p : products) {
-            if (id == p.getIdentifier()) {
+            if (id == p.getId()) {
                 return p;
             }
         }
@@ -68,23 +67,22 @@ public class Product {
      * @param products Array de productes en format "id:quantitat".
      * @return Una llista de productes de la comanda amb les seves quantitats corresponents.
      */
-    public static HashMap<Product, Double> refactorOrderProducts(String[] products) {
-        HashMap<Product, Double> orderProducts = new HashMap<>();
+    public static ArrayList<OrderProduct> refactorOrderProducts(String[] products) {
+        ArrayList<OrderProduct> orderProducts = new ArrayList<>();
         for (String p : products) {
             String[] productsSplit = p.split(":");
             Product product = selectProductById(Integer.parseInt(productsSplit[0]));
-            orderProducts.put(product, Double.parseDouble(productsSplit[1]));
+            orderProducts.add(new OrderProduct(product, Double.parseDouble(productsSplit[1])));
         }
         return orderProducts;
     }
 
     @Override
     public String toString() {
-        return "ID " + identifier +
-               " Nom " + name +
-               " Preu " + price;
+        return "ID " + id +
+                " Nom " + name +
+                " Preu " + price;
     }
-
     public String toStringTicket() {
         return name + ". Preu: " + price;
     }

@@ -1,19 +1,17 @@
 package menu;
 
 import app.Main;
+import classes.Admin;
 import manager.AdminManager;
 import manager.CustomerManager;
 import manager.OrderManager;
-import manager.SupermarketManager;
 
 public class LoggedMenu {
     public static void displayMenu() {
+        System.out.println(Main.admin.getName());
         System.out.println("""
+                ====== BENVINGUT A L'ENTORN D'USUARI ======
                 ___________________________________________
-                |  === BENVINGUT A L'ENTORN D'USUARI ===  |""");
-        System.out.println("| * Usuari: " + Main.admin.getUsername() + "                         |");
-        System.out.println("""
-                |_________________________________________|
                 | * 1. GESTIÓ DE CLIENTS                  |
                 | * 2. GESTIÓ DE COMPRES                  |
                 | * 3. GESTIÓ DE SUPERMERCATS             |
@@ -32,24 +30,21 @@ public class LoggedMenu {
                 OrderManager.run();
                 break;
             case 3:
-                SupermarketManager.run();
+
                 break;
             case 4:
                 AdminManager.run();
                 break;
             case 5:
-                AdminManager.logout();
+                Admin.logout();
                 break;
             case 0:
-                shutDown();
+                System.out.println("El programa es tanca...");
+                System.exit(0);
                 break;
             default:
                 System.out.println("Error: No és una opció vàlida.");
                 break;
         }
-    }
-    static void shutDown() {
-        System.out.println("El programa es tanca...");
-        System.exit(0);
     }
 }
